@@ -1,0 +1,68 @@
+#zad 1
+# pkt a)
+select * from postac order by data_ur DESC;
+delete from postac where nazwa='Grzesiek';
+delete from postac where nazwa='Bronislaw';
+# pkt b)
+set foreign_key_checks =0;
+alter table postac drop foreign key postac_ibfk_1;
+alter table walizka drop foreign key walizka_ibfk_1;
+alter table przetwory drop foreign key przetwory_ibfk_1;
+alter table przetwory drop foreign key przetwory_ibfk_2;
+alter table postac modify id_postaci int;
+alter table postac drop primary key;
+#zad 2
+#pkt a)
+alter table postac add column pesel char(11);
+update postac set pesel='12345678901' + id_postaci;
+alter table postac modify pesel char(11) primary key;
+#pkt b
+alter table postac modify rodzaj enum('wiking','kobieta','ptak','syrena');
+#pkt c
+insert into postac(id_postaci,nazwa,rodzaj,pesel)values (9,'Gertruda_Nieszczera','syrena','10987654321');
+#zad 3
+#pkt a
+select nazwa from postac where nazwa like '%a%';
+update postac set statek='Czarna Tesciowa' where nazwa ='Tesciowa';
+update postac set statek='Czarna Tesciowa' where nazwa ='Marian';
+update postac set statek='Czarna Tesciowa' where nazwa ='Alfred';
+update postac set statek='Czarna Tesciowa' where nazwa ='Gertruda_Nieszczera';
+#pkt b
+update statek set max_ladownosc=max_ladownosc * 0.7 where data_wodowania >= '1901-01-01' and data_wodowania <='2000-12-31';
+#pkt c
+alter table postac add check (wiek <= 1000);
+#zad 4
+#pkt a
+alter table postac modify rodzaj enum('wiking','ptak','kobieta','syrena','waz');
+insert into postac(id_postaci,nazwa,rodzaj,pesel) values (10,'Loko','waz','98701234567');
+#pkt b
+create table marynarz like postac;
+insert into marynarz select*from postac where statek is not null;
+#pkt c
+alter table marynarz drop primary key;
+alter table marynarz add foreign key(pesel) references postac(pesel) on delete cascade;
+alter table marynarz drop id_postaci;
+alter table marynarz add column id_postaci int auto_increment primary key;
+#zad 5
+#pkt a
+update marynarz set statek = null where statek='Czarna Tesciowa';
+update marynarz set statek = null where statek='SS Wiking';
+update postac set statek = null where statek='Czarna Tesciowa';
+update postac set statek = null where statek='SS Wiking';
+#pkt b
+delete from postac where nazwa='Marian';
+delete from marynarz where nazwa='Marian';
+#pkt c
+delete from statek;
+#pkt d
+drop table statek;
+#pkt e
+create table zwierz(id_zwierza int auto_increment primary key,nazwa varchar(40), wiek int unsigned);
+#pkt f
+insert into zwierz(nazwa,wiek) select nazwa,wiek from postac where rodzaj='ptak';
+insert into zwierz(nazwa,wiek) select nazwa,wiek from postac where rodzaj='waz';
+
+
+
+
+
