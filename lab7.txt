@@ -1,0 +1,28 @@
+#zad 1
+#pkt 1
+select avg(waga) from kreatura where rodzaj='wiking';
+#pkt 2
+select rodzaj,avg(waga),count(*) from kreatura group by rodzaj;
+#pkt3
+select rodzaj,avg(year(curdate())-year(dataUr)) from kreatura group by rodzaj;
+#zad2
+#pkt 1
+select rodzaj,sum(waga) from zasob group by rodzaj;
+#pkt 2
+select rodzaj,sum(waga) from zasob group by rodzaj having count(*)>4 and sum(waga)>10;
+#pkt 3
+select rodzaj, count(distinct(nazwa)) from zasob group by rodzaj having sum(ilosc)>1; 
+#zad3
+#pkt 1
+ select kreatura.nazwa, count(ilosc) from kreatura inner join ekwipunek on kreatura.idKreatury = ekwipunek.idKreatury group by nazwa;
+#pkt 2
+select kreatura.nazwa,zasob.nazwa from kreatura,ekwipunek,zasob where kreatura.idKreatury = ekwipunek.idKreatury and ekwipunek.idZasobu = zasob.idZasobu order by kreatura.nazwa;
+#pkt 3
+select kreatura.nazwa,kreatura.idKreatury from kreatura left join ekwipunek on kreatura.idKreatury where ekwipunek.idKreatury is null;
+#zad 4
+#pkt 1
+select distinct(kreatura.nazwa),zasob.nazwa,dataUr from kreatura natural join ekwipunek,zasob where dataUr between '1670-01-01' and '1679-12-31';
+#pkt 2
+select kreatura.nazwa,zasob.rodzaj from kreatura,ekwipunek,zasob where kreatura.idKreatury = ekwipunek.idKreatury and ekwipunek.idZasobu = zasob.idZasobu and zasob.rodzaj = 'jedzenie' limit 5;
+#pkt 3
+select ka.nazwa,kb.nazwa from kreatura ka,kreatura kb where kb.idKreatury=ka.idKreatury+5;
