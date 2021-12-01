@@ -1,0 +1,13 @@
+#zad3
+#pkt 1
+select s.nazwa,count(ew.sektor) from sektor s left join etapy_wyprawy ew on s.id_sektora=ew.sektor group by s.nazwa;
+#pkt2
+select k.nazwa,ifnull(u.id_uczestnika,'nie bral udzialu w wyprawie') as uczestnictwo from kreatura k left join uczestnicy u on k.idKreatury=u.id_uczestnika;
+#zad4
+#pkt 1
+select w.nazwa,sum(length(ew.dziennik)) from wyprawa w inner join etapy_wyprawy ew on w.id_wyprawy=ew.idWyprawy group by w.nazwa having sum(length(ew.dziennik))<400;
+#pkt 2
+select u.id_wyprawy,sum(e.ilosc*z.waga),count(distinct u.id_uczestnika), sum(e.ilosc*z.waga)/count(distinct u.id_uczestnika) from uczestnicy u left join ekwipunek e on u.id_uczestnika=e.idKreatury left join zasob z on z.idZasobu=e.idZasobu group by id_wyprawy;
+#zad5
+#pkt1
+ select w.nazwa,k.nazwa,datediff(w.data_rozpoczecia,k.dataUr) from wyprawa w inner join etapy_wyprawy ew on w.id_wyprawy=ew.idWyprawy inner join sektor s on s.id_sektora=ew.sektor inner join uczestnicy u on w.id_wyprawy=u.id_wyprawy inner join kreatura k on k.idKreatury=u.id_uczestnika where ew.sektor=7;
